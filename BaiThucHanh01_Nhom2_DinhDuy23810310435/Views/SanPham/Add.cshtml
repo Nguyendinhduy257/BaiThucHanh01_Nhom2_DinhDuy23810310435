@@ -1,0 +1,62 @@
+﻿@model BaiThucHanh01_Nhom2_DinhDuy23810310435.Models.SanPham
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm mới sản phẩm - Nguyễn Đình Duy</title>
+    <link rel="stylesheet" href="~/css/form.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="form-container">
+        <a href="/SanPham/Info" class="btn-back"><i data-lucide="arrow-left" width="18"></i> Quay lại danh sách</a>
+
+        <h2 class="form-title">THÊM SẢN PHẨM MỚI</h2>
+
+        <form asp-action="Add" method="post">
+            <div class="form-group">
+                <label>Tên sản phẩm *</label>
+                <input asp-for="TenSanPham" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label>Giá bán ($) *</label>
+                <input asp-for="GiaBan" type="number" step="0.01" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label>Giá gốc ($) (Không bắt buộc)</label>
+                <input asp-for="GiaGoc" type="number" step="0.01" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>% Giảm giá (Không bắt buộc)</label>
+                <input asp-for="PhanTramGiam" type="number" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Đường dẫn ảnh (Ví dụ: /lib/ao-thun.png)</label>
+                <input asp-for="DuongDanAnh" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Phân loại hiển thị (Tabs):</label>
+                <div class="checkbox-group">
+                    <label><input asp-for="IsNewProduct" type="checkbox" /> New Product</label>
+                    <label><input asp-for="IsOnSale" type="checkbox" /> On Sale</label>
+                    <label><input asp-for="IsFeatureProduct" type="checkbox" /> Featured</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">LƯU SẢN PHẨM</button>
+        </form>
+    </div>
+
+    <footer>Dự án E-commerce MVC | Phát triển bởi: <strong>Nguyễn Đình Duy</strong> (Nhóm 2)</footer>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+﻿@model IEnumerable<BaiThucHanh01_Nhom2_DinhDuy23810310435.Models.SanPham>
+
+@{
+    Layout = null;
+
+    // Thiết lập biến lưu trữ class CSS cho các Tab điều hướng
+    string tabNewClass = "tab";
+    string tabSaleClass = "tab";
+    string tabFeaturedClass = "tab";
+
+    // Kiểm tra Tab đang hoạt động để gán class 'active' tương ứng
+    if (ViewBag.ActiveTab == "sale")
+    {
+        tabSaleClass = "tab active";
+    }
+    else if (ViewBag.ActiveTab == "featured")
+    {
+        tabFeaturedClass = "tab active";
+    }
+    else
+    {
+        tabNewClass = "tab active";
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách sản phẩm - Nguyễn Đình Duy</title>
+
+    <link rel="stylesheet" href="~/css/info.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Định dạng thẻ liên kết hoạt động giống Tab giao diện */
+        .tabs a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="tabs">
+            <a href="/SanPham/Info?tab=new&page=1" class="@tabNewClass">NEW PRODUCT</a>
+            <a href="/SanPham/Info?tab=sale&page=1" class="@tabSaleClass">ON SALE</a>
+            <a href="/SanPham/Info?tab=featured&page=1" class="@tabFeaturedClass">FEATURED PRODUCT</a>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var sp in Model)
+                {
+                    <div class="product-card">
+
+                        @if (sp.PhanTramGiam.HasValue)
+                        {
+                            if (sp.PhanTramGiam > 0)
+                            {
+                                <div class="badge-discount">-@sp.PhanTramGiam%</div>
+                            }
+                        }
+
+                        <div class="icon-actions">
+                            <button class="icon-btn btn-heart" title="Yêu thích" onclick="toggleLike(this)">
+                                <i data-lucide="heart" width="18"></i>
+                            </button>
+
+                            <a href="/SanPham/Edit/@sp.Id" class="icon-btn btn-edit" title="Chỉnh sửa (ID: @sp.Id)">
+                                <i data-lucide="edit" width="18"></i>
+                            </a>
+                        </div>
+
+                        <img src="@sp.DuongDanAnh" alt="@sp.TenSanPham" class="product-image" onerror="this.src='https://via.placeholder.com/250x250?text=No+Image'" />
+
+                        <a asp-controller="SanPham" asp-action="Add" class="add-to-cart">ADD TO CART</a>
+
+                        <div class="price-wrapper">
+                            <span class="price">$@sp.GiaBan.ToString("0.00")</span>
+
+                            @if (sp.GiaGoc.HasValue)
+                            {
+                                <span class="old-price">$@sp.GiaGoc.Value.ToString("0.00")</span>
+                            }
+                        </div>
+                        <div class="product-name">@sp.TenSanPham (ID: @sp.Id)</div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Chưa có sản phẩm nào trong danh mục này.</p>
+            }
+        </div>
+
+        @if (ViewBag.TotalPages != null)
+        {
+            if (ViewBag.TotalPages > 1)
+            {
+                <div class="pagination">
+                    <!--Cho nút quay về ở đầu file-->
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@(ViewBag.CurrentPage - 1)">
+                            <i data-lucide="chevron-left" width="18"></i>
+                        </a>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        if (i == ViewBag.CurrentPage)
+                        {
+                            <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@i" class="active">@i</a>
+                        }
+                        else
+                        {
+                            <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@i">@i</a>
+                        }
+                    }
+
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@(ViewBag.CurrentPage + 1)">
+                            <i data-lucide="chevron-right" width="18"></i>
+                        </a>
+                    }
+
+                </div>
+            }
+        }
+
+    </div>
+
+    <footer>
+        Dự án E-commerce MVC | Phát triển bởi: <strong>Nguyễn Đình Duy</strong> (Nhóm 2)
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        //hàm Toggle Liked cho icon đã được nhấn làm sản phẩm yêu thích
+        function toggleLike(buttonElement) {
+            buttonElement.classList.toggle('liked');
+        }
+    </script>
+</body>
+</html>
