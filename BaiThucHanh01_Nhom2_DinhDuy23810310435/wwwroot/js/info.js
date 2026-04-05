@@ -1,8 +1,21 @@
 ﻿// wwwroot/js/info.js
 
-// Kích hoạt Lucide Icons
+// Khởi tạo bộ icon mượt mà từ thư viện Lucide
 lucide.createIcons();
 
+// Hàm click tim (Thêm hiệu ứng bong bóng nẩy siêu cấp)
+function toggleLike(buttonElement) {
+    buttonElement.classList.toggle('liked');
+
+    // Thêm hiệu ứng nẩy khi click
+    buttonElement.style.transform = 'scale(0.8)';
+    setTimeout(() => {
+        buttonElement.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            buttonElement.style.transform = 'scale(1)';
+        }, 150);
+    }, 100);
+}
 // Hàm lọc sản phẩm theo Tab
 function filterTab(category, tabElement) {
     // Cập nhật CSS cho Tab đang chọn

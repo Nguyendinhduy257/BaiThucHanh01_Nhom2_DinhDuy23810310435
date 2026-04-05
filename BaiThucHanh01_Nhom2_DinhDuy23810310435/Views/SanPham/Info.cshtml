@@ -1,26 +1,20 @@
 ﻿@model IEnumerable<BaiThucHanh01_Nhom2_DinhDuy23810310435.Models.SanPham>
+@using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
     Layout = null;
 
-    // Thiết lập biến lưu trữ class CSS cho các Tab điều hướng
+    // Xử lý class cho Tabs
     string tabNewClass = "tab";
     string tabSaleClass = "tab";
     string tabFeaturedClass = "tab";
 
-    // Kiểm tra Tab đang hoạt động để gán class 'active' tương ứng
-    if (ViewBag.ActiveTab == "sale")
-    {
-        tabSaleClass = "tab active";
-    }
-    else if (ViewBag.ActiveTab == "featured")
-    {
-        tabFeaturedClass = "tab active";
-    }
-    else
-    {
-        tabNewClass = "tab active";
-    }
+    if (ViewBag.ActiveTab == "sale") tabSaleClass = "tab active";
+    else if (ViewBag.ActiveTab == "featured") tabFeaturedClass = "tab active";
+    else tabNewClass = "tab active";
+
+    // Lấy danh sách danh mục để làm Selectbox (Đã chuẩn bị ở Controller)
+    var danhMucs = ViewBag.DanhMucs as List<BaiThucHanh01_Nhom2_DinhDuy23810310435.Models.DanhMuc>;
 }
 
 <!DOCTYPE html>
@@ -28,17 +22,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách sản phẩm - Nguyễn Đình Duy</title>
+    <title>Danh sách sản phẩm - VIP Pro Edition</title>
 
     <link rel="stylesheet" href="~/css/info.css" />
-    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-        /* Định dạng thẻ liên kết hoạt động giống Tab giao diện */
-        .tabs a {
-            text-decoration: none;
-        }
-    </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -50,6 +38,48 @@
             <a href="/SanPham/Info?tab=featured&page=1" class="@tabFeaturedClass">FEATURED PRODUCT</a>
         </div>
 
+        <form method="get" action="/SanPham/Info" class="toolbar">
+            <input type="hidden" name="tab" value="@ViewBag.ActiveTab" />
+
+            <div class="filter-group">
+                <input type="text" name="searchName" value="@ViewBag.SearchName"
+                       placeholder="Tìm kiếm sản phẩm..." class="fancy-input" />
+
+                <select name="danhMucId" class="fancy-input" style="cursor: pointer;">
+                    <option value="">-- Tất cả danh mục --</option>
+                    @if (danhMucs != null)
+                    {
+                        foreach (var dm in danhMucs)
+                        {
+                            if (ViewBag.CurrentDanhMuc == dm.Id)
+                            {
+                                <option value="@dm.Id" selected>@dm.NameVN</option>
+                            }
+                            else
+                            {
+                                <option value="@dm.Id">@dm.NameVN</option>
+                            }
+                        }
+                    }
+                </select>
+
+                <button type="submit" class="btn-fancy">
+                    <i data-lucide="filter" width="18"></i> Lọc
+                </button>
+                <a href="/SanPham/Info?tab=@ViewBag.ActiveTab" class="btn-outline">Reset</a>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <a href="/DanhMuc/Index" class="btn-outline" style="text-decoration: none;">
+                    <i data-lucide="folder-tree" width="18"></i> Quản lý Danh Mục
+                </a>
+
+                <a href="/SanPham/Add" class="btn-fancy btn-add-new" style="text-decoration: none;">
+                    <i data-lucide="plus-circle" width="18"></i> Thêm Sản Phẩm
+                </a>
+            </div>
+        </form>
+
         <div class="product-grid" id="productGrid">
             @if (Model != null && Model.Any())
             {
@@ -57,12 +87,9 @@
                 {
                     <div class="product-card">
 
-                        @if (sp.PhanTramGiam.HasValue)
+                        @if (sp.PhanTramGiam.HasValue && sp.PhanTramGiam > 0)
                         {
-                            if (sp.PhanTramGiam > 0)
-                            {
-                                <div class="badge-discount">-@sp.PhanTramGiam%</div>
-                            }
+                            <div class="badge-discount">-@sp.PhanTramGiam%</div>
                         }
 
                         <div class="icon-actions">
@@ -73,64 +100,75 @@
                             <a href="/SanPham/Edit/@sp.Id" class="icon-btn btn-edit" title="Chỉnh sửa (ID: @sp.Id)">
                                 <i data-lucide="edit" width="18"></i>
                             </a>
+
+                            <a href="/SanPham/Delete/@sp.Id"
+                               class="icon-btn btn-edit btn-danger-icon" title="Xóa (ID: @sp.Id)"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm [ @sp.TenSanPham ] này không? Bay luôn cả ảnh liên quan đấy nhé!');">
+                                <i data-lucide="trash-2" width="18"></i>
+                            </a>
                         </div>
 
-                        <img src="@sp.DuongDanAnh" alt="@sp.TenSanPham" class="product-image" onerror="this.src='https://via.placeholder.com/250x250?text=No+Image'" />
+                        <img src="@sp.DuongDanAnh" alt="@sp.TenSanPham" class="product-image"
+                             onerror="this.src='https://via.placeholder.com/250x250?text=No+Image'" />
 
-                        <a asp-controller="SanPham" asp-action="Add" class="add-to-cart">ADD TO CART</a>
+                        <a href="/SanPham/Add" class="add-to-cart">ADD TO CART</a>
 
                         <div class="price-wrapper">
                             <span class="price">$@sp.GiaBan.ToString("0.00")</span>
-
                             @if (sp.GiaGoc.HasValue)
                             {
                                 <span class="old-price">$@sp.GiaGoc.Value.ToString("0.00")</span>
                             }
                         </div>
-                        <div class="product-name">@sp.TenSanPham (ID: @sp.Id)</div>
+
+                        <div class="product-name">
+                            <strong>@sp.TenSanPham</strong> <br />
+                            <span style="font-size:12px; color:#999;">
+                                ID: @sp.Id | Danh mục: @(sp.DanhMuc?.NameVN ?? "Chưa phân loại")
+                            </span>
+                        </div>
                     </div>
                 }
             }
             else
             {
-                <p>Chưa có sản phẩm nào trong danh mục này.</p>
+                <div style="grid-column: 1 / -1; text-align: center; padding: 50px; background: #fff; border-radius: 16px;">
+                    <i data-lucide="package-open" width="48" style="color: #ccc; margin-bottom: 15px;"></i>
+                    <h3 style="color: #555;">Không tìm thấy sản phẩm nào!</h3>
+                    <p style="color: #888;">Sếp thử đổi bộ lọc hoặc thêm sản phẩm mới xem sao.</p>
+                </div>
             }
         </div>
 
-        @if (ViewBag.TotalPages != null)
+        @if (ViewBag.TotalPages != null && ViewBag.TotalPages > 1)
         {
-            if (ViewBag.TotalPages > 1)
-            {
-                <div class="pagination">
-                    <!--Cho nút quay về ở đầu file-->
-                    @if (ViewBag.CurrentPage > 1)
-                    {
-                        <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@(ViewBag.CurrentPage - 1)">
-                            <i data-lucide="chevron-left" width="18"></i>
-                        </a>
-                    }
+            <div class="pagination">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@(ViewBag.CurrentPage - 1)&searchName=@ViewBag.SearchName&danhMucId=@ViewBag.CurrentDanhMuc">
+                        <i data-lucide="chevron-left" width="18"></i>
+                    </a>
+                }
 
-                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    if (i == ViewBag.CurrentPage)
                     {
-                        if (i == ViewBag.CurrentPage)
-                        {
-                            <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@i" class="active">@i</a>
-                        }
-                        else
-                        {
-                            <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@i">@i</a>
-                        }
+                        <a href="#" class="active">@i</a>
                     }
-
-                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    else
                     {
-                        <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@(ViewBag.CurrentPage + 1)">
-                            <i data-lucide="chevron-right" width="18"></i>
-                        </a>
+                        <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@i&searchName=@ViewBag.SearchName&danhMucId=@ViewBag.CurrentDanhMuc">@i</a>
                     }
+                }
 
-                </div>
-            }
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <a href="/SanPham/Info?tab=@ViewBag.ActiveTab&page=@(ViewBag.CurrentPage + 1)&searchName=@ViewBag.SearchName&danhMucId=@ViewBag.CurrentDanhMuc">
+                        <i data-lucide="chevron-right" width="18"></i>
+                    </a>
+                }
+            </div>
         }
 
     </div>
@@ -139,12 +177,6 @@
         Dự án E-commerce MVC | Phát triển bởi: <strong>Nguyễn Đình Duy</strong> (Nhóm 2)
     </footer>
 
-    <script>
-        lucide.createIcons();
-        //hàm Toggle Liked cho icon đã được nhấn làm sản phẩm yêu thích
-        function toggleLike(buttonElement) {
-            buttonElement.classList.toggle('liked');
-        }
-    </script>
+    <script src="~/js/info.js"></script>
 </body>
 </html>

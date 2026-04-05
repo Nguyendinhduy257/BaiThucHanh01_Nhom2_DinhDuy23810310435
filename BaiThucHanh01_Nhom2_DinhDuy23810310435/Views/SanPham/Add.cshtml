@@ -2,7 +2,6 @@
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +16,23 @@
 
         <h2 class="form-title">THÊM SẢN PHẨM MỚI</h2>
 
-        <form asp-action="Add" method="post">
+        <form asp-action="Add" method="post" enctype="multipart/form-data">
+            @if (ViewData.ModelState.IsValid)
+             {
+                <div asp-validation-summary="All" style="color: #d93838; font-weight: bold; margin-bottom: 15px; padding: 10px; border: 1px dashed red; background: #ffe6e6;"></div>
+
+             }
+
             <div class="form-group">
                 <label>Tên sản phẩm *</label>
                 <input asp-for="TenSanPham" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label>Danh mục *</label>
+                <select asp-for="DanhMucId" asp-items="@ViewBag.DanhMucs" class="form-control" required>
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -38,9 +50,18 @@
                 <input asp-for="PhanTramGiam" type="number" class="form-control" />
             </div>
 
-            <div class="form-group">
-                <label>Đường dẫn ảnh (Ví dụ: /lib/ao-thun.png)</label>
-                <input asp-for="DuongDanAnh" class="form-control" />
+            <div class="form-group" style="background: #fdfdfd; padding: 15px; border-radius: 8px; border: 2px dashed #ccc;">
+                <label style="color: #d93838; font-weight: bold; margin-bottom: 10px; display: block;">
+                    <i data-lucide="image" width="18" style="vertical-align: middle;"></i> Tùy chọn Ảnh Sản Phẩm (Chọn 1 trong 2)
+                </label>
+
+                <label>Cách 1: Nhập đường dẫn thủ công (VD: /lib/product-1.png)</label>
+                <input asp-for="DuongDanAnh" class="form-control" style="margin-bottom: 15px;" placeholder="/lib/..." />
+
+                <div style="text-align: center; color: #888; font-size: 13px; margin-bottom: 15px; font-weight: bold;">--- HOẶC ---</div>
+
+                <label>Cách 2: Tải ảnh từ máy tính (Sẽ ưu tiên cách này nếu bạn chọn file)</label>
+                <input type="file" name="hinhAnh" class="form-control" accept="image/*" />
             </div>
 
             <div class="form-group">

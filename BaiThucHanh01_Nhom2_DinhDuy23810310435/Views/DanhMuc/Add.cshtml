@@ -1,0 +1,55 @@
+﻿@model BaiThucHanh01_Nhom2_DinhDuy23810310435.Models.DanhMuc
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Danh Mục - Modern UI</title>
+    <link rel="stylesheet" href="~/css/danhmuc-modern.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="modern-card">
+        <a href="/DanhMuc/Index" class="btn-back">
+            <i data-lucide="chevron-left" width="18"></i> Trở về danh sách
+        </a>
+
+        <div class="form-header">
+            <div style="background: rgba(99, 102, 241, 0.1); width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                <i data-lucide="folder-plus" color="#6366f1" width="32" height="32"></i>
+            </div>
+            <h2>Tạo Danh Mục</h2>
+            <p style="color: #94a3b8; font-size: 14px;">Thêm phân loại mới cho hệ thống của sếp</p>
+        </div>
+
+        <form asp-action="Add" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div style="color: #ef4444; background: #fee2e2; padding: 12px; border-radius: 10px; margin-bottom: 20px; font-size: 13px;">
+                    <div asp-validation-summary="All"></div>
+                </div>
+            }
+
+            <div class="input-group">
+                <label>TÊN DANH MỤC (VIETNAMESE) *</label>
+                <input asp-for="NameVN" class="modern-input" placeholder="VD: Điện thoại, Máy tính..." required />
+            </div>
+
+            <div class="input-group">
+                <label>TÊN DANH MỤC (ENGLISH)</label>
+                <input asp-for="Name" class="modern-input" placeholder="VD: Mobile, Laptop..." />
+            </div>
+
+            <button type="submit" class="btn-submit">
+                LƯU DANH MỤC <i data-lucide="arrow-right" width="18"></i>
+            </button>
+        </form>
+    </div>
+
+    <script src="~/js/danhmuc-modern.js"></script>
+</body>
+</html>

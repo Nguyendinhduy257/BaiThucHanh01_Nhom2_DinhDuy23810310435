@@ -6,13 +6,17 @@ namespace BaiThucHanh01_Nhom2_DinhDuy23810310435
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<SanPham> SanPham { get; set; }
+        public DbSet<DanhMuc> DanhMucs { get; set; }
+        public DbSet<KhachHang> KhachHangs { get; set; }
+        public DbSet<DonHang> DonHangs { get; set; }
+        public DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }
 
         //lấy cấu trúc từ file Models/SanPhamSeeder.cs
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //gọi class Seeder nhét 100 sản phẩm lặp đi lặp lại vào bảng TABLE SanPham
-            modelBuilder.Entity<SanPham>().HasData(SanPhamSeeder.TaoDuLieuMau());
+            modelBuilder.Entity<DanhMuc>().HasData(DataSeeder.TaoDuLieuDanhMucMau());
+            modelBuilder.Entity<SanPham>().HasData(DataSeeder.TaoDuLieuSanPhamMau());
         }
     }
 }

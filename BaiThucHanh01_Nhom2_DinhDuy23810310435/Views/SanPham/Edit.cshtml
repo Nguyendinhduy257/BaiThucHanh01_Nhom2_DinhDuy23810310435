@@ -2,7 +2,6 @@
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,12 +16,23 @@
 
         <h2 class="form-title">CHỈNH SỬA SẢN PHẨM</h2>
 
-        <form asp-action="Edit" method="post">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div asp-validation-summary="All" style="color: #d93838; font-weight: bold; margin-bottom: 15px; padding: 10px; border: 1px dashed red; background: #ffe6e6;"></div>
+            }
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group">
                 <label>Tên sản phẩm *</label>
                 <input asp-for="TenSanPham" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label>Danh mục *</label>
+                <select asp-for="DanhMucId" asp-items="@ViewBag.DanhMucs" class="form-control" required>
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -40,9 +50,26 @@
                 <input asp-for="PhanTramGiam" type="number" class="form-control" />
             </div>
 
-            <div class="form-group">
-                <label>Đường dẫn ảnh</label>
-                <input asp-for="DuongDanAnh" class="form-control" />
+            <div class="form-group" style="background: #fdfdfd; padding: 15px; border-radius: 8px; border: 2px dashed #ccc;">
+                <label style="color: #d93838; font-weight: bold; margin-bottom: 10px; display: block;">
+                    <i data-lucide="image" width="18" style="vertical-align: middle;"></i> Tùy chọn Ảnh Sản Phẩm
+                </label>
+
+                @if (!string.IsNullOrEmpty(Model?.DuongDanAnh))
+                {
+                    <div style="margin-bottom: 15px; text-align: center;">
+                        <span style="font-size: 12px; color: #666; display: block; margin-bottom: 5px;">Ảnh hiện tại:</span>
+                        <img src="@Model.DuongDanAnh" alt="Ảnh sản phẩm" style="max-height: 120px; object-fit: contain; border: 1px solid #eee; padding: 5px; border-radius: 8px; background: #fff;" />
+                    </div>
+                }
+
+                <label>Cách 1: Sửa đường dẫn thủ công</label>
+                <input asp-for="DuongDanAnh" class="form-control" style="margin-bottom: 15px;" placeholder="/lib/..." />
+
+                <div style="text-align: center; color: #888; font-size: 13px; margin-bottom: 15px; font-weight: bold;">--- HOẶC ---</div>
+
+                <label>Cách 2: Tải ảnh mới từ máy tính (Sẽ ưu tiên và ghi đè cách 1)</label>
+                <input type="file" name="hinhAnh" class="form-control" accept="image/*" />
             </div>
 
             <div class="form-group">

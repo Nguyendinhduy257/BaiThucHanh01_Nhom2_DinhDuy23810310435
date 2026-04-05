@@ -1,11 +1,10 @@
-﻿/* wwwroot/css/info.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 body {
     font-family: 'Inter', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f7f6; /* Nền xám sáng hiện đại */
+    background-color: #f4f7f6;
     color: #333;
 }
 
@@ -15,13 +14,12 @@ body {
     padding: 0 20px;
 }
 
-/* Xóa gạch chân cho toàn bộ thẻ a */
 a {
     border: none;
     text-decoration: none;
 }
 
-/* ================== PHẦN TABS ================== */
+/* PHẦN TABS */
 .tabs {
     display: flex;
     justify-content: center;
@@ -54,14 +52,102 @@ a {
             box-shadow: 0 4px 15px rgba(217, 56, 56, 0.3);
         }
 
-/* ================== LƯỚI SẢN PHẨM ================== */
+/*THANH CÔNG CỤ TÌM KIẾM & LỌC */
+.toolbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.filter-group {
+    display: flex;
+    gap: 15px;
+    flex-grow: 1;
+}
+
+.fancy-input {
+    padding: 12px 20px;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+    background: #fff;
+}
+
+    .fancy-input:focus {
+        border-color: #d93838;
+        box-shadow: 0 0 0 4px rgba(217, 56, 56, 0.1);
+    }
+
+.btn-fancy {
+    background: linear-gradient(135deg, #d93838, #ff4b2b);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(217, 56, 56, 0.3);
+}
+
+    .btn-fancy:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(217, 56, 56, 0.4);
+    }
+
+.btn-outline {
+    background: #fff;
+    color: #555;
+    border: 2px solid #eee;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .btn-outline:hover {
+        border-color: #999;
+        color: #333;
+    }
+
+.btn-add-new {
+    background: #222;
+    color: #fff;
+}
+
+    .btn-add-new:hover {
+        background: #000;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+/*LƯỚI SẢN PHẨM */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 30px;
 }
 
-/* ================== CARD SẢN PHẨM ================== */
 .product-card {
     background: #fff;
     padding: 20px;
@@ -78,7 +164,6 @@ a {
         box-shadow: 0 15px 30px rgba(0,0,0,0.08);
     }
 
-/* Hiệu ứng zoom ảnh */
 .product-image {
     width: 100%;
     height: 250px;
@@ -91,7 +176,7 @@ a {
     transform: scale(1.08);
 }
 
-/* ================== HUY HIỆU ================== */
+/* HUY HIỆU GIẢM GIÁ */
 .badge-discount {
     position: absolute;
     top: 15px;
@@ -110,7 +195,7 @@ a {
     box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
 }
 
-/* ================== CÁC NÚT ICON GÓC PHẢI ================== */
+/*  CÁC NÚT ICON GÓC PHẢI */
 .icon-actions {
     position: absolute;
     top: 15px;
@@ -119,10 +204,8 @@ a {
     flex-direction: column;
     gap: 10px;
     z-index: 15;
-    /* Đã xóa thuộc tính tàng hình ở đây để tim luôn hiện */
 }
 
-/* Khung viền chung cho cả Tim và Bút */
 .icon-btn {
     background: #fff;
     border-radius: 50%;
@@ -137,14 +220,12 @@ a {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-    /* Hover chung cho icon */
     .icon-btn:hover {
         background: #d93838;
         color: #fff;
         transform: scale(1.1);
     }
 
-/* --- XỬ LÝ NÚT TIM (LUÔN HIỆN) --- */
 .btn-heart {
     opacity: 1;
 }
@@ -158,34 +239,32 @@ a {
             transform: scale(1.15);
             transition: all 0.3s ease;
         }
-        btn-heart:hover{
-            transform:scale(1.1);
-        }
 
-        /* Khi đã like, hover vào giữ nền trắng để tim nổi bật */
         .btn-heart.liked:hover {
             background: #fff;
             transform: scale(1.15);
         }
-        .btn-heart.liked svg{
-            fill:#d93838;
-            transform:scale(1.15);
-            transition:all 0.3s ease;
-        }
 
-/* --- XỬ LÝ NÚT BÚT (TÀNG HÌNH, CHỜ HOVER) --- */
 .btn-edit {
     opacity: 0;
     transform: translateX(20px);
 }
 
-/* Hover vào card thì nút Bút mới trượt ra */
 .product-card:hover .btn-edit {
     opacity: 1;
     transform: translateX(0);
 }
 
-/* ================== NÚT THÊM VÀO GIỎ HÀNG ================== */
+.btn-danger-icon {
+    color: #ff416c;
+}
+
+    .btn-danger-icon:hover {
+        background: #ff416c !important;
+        color: white !important;
+    }
+
+/*  NÚT THÊM VÀO GIỎ HÀNG */
 .add-to-cart {
     width: calc(100% - 40px);
     background: #222;
@@ -199,7 +278,7 @@ a {
     letter-spacing: 1px;
     cursor: pointer;
     position: absolute;
-    bottom: 110px; /* Vị trí đè lên viền dưới của ảnh */
+    bottom: 110px;
     left: 20px;
     opacity: 0;
     transform: translateY(20px);
@@ -218,7 +297,7 @@ a {
     transform: scale(1.02);
 }
 
-/* ================== THÔNG TIN GIÁ & TÊN ================== */
+/*  THÔNG TIN GIÁ & TÊN */
 .price-wrapper {
     margin-top: 20px;
 }
@@ -243,7 +322,7 @@ a {
     line-height: 1.4;
 }
 
-/* ================== PHÂN TRANG ================== */
+/* PHÂN TRANG = */
 .pagination {
     display: flex;
     justify-content: center;
@@ -280,7 +359,7 @@ a {
             box-shadow: 0 4px 12px rgba(217, 56, 56, 0.3);
         }
 
-/* ================== FOOTER ================== */
+/* FOOTER */
 footer {
     text-align: center;
     padding: 40px;

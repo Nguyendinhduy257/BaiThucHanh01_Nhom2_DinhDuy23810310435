@@ -1,0 +1,121 @@
+﻿@model IEnumerable<BaiThucHanh01_Nhom2_DinhDuy23810310435.Models.DanhMuc>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Danh Mục - VIP Pro</title>
+    <link rel="stylesheet" href="~/css/info.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .table-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f4f7f6;
+            color: #555;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background: #ffe6e6;
+            color: #d93838;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed red;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body style="background-color: #f4f7f6; font-family: 'Inter', sans-serif;">
+
+    <div class="table-container">
+        <a href="/SanPham/Info" style="text-decoration: none; color: #555; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 20px; font-weight: bold;">
+            <i data-lucide="arrow-left" width="18"></i> Quay lại Sản Phẩm
+        </a>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="color: #333; margin: 0;">QUẢN LÝ DANH MỤC</h2>
+            <a href="/DanhMuc/Add" class="btn-fancy" style="text-decoration: none; padding: 10px 20px; border-radius: 8px; background: #222; color: #fff;">
+                <i data-lucide="plus" width="18"></i> Thêm Danh Mục
+            </a>
+        </div>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert-error" style="margin-top: 20px;">
+                <i data-lucide="alert-triangle" width="18" style="vertical-align: middle;"></i>
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Tiếng Việt</th>
+                    <th>Tên Tiếng Anh</th>
+                    <th style="width: 100px;">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>#@item.Id</strong></td>
+                            <td style="color: #d93838; font-weight: bold;">@item.NameVN</td>
+                            <td>@(string.IsNullOrEmpty(item.Name) ? "---" : item.Name)</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a href="/DanhMuc/Edit/@item.Id" style="color: #4a90e2;" title="Sửa">
+                                        <i data-lucide="edit" width="20"></i>
+                                    </a>
+                                    <a href="/DanhMuc/Delete/@item.Id" style="color: #ff416c;" title="Xóa"
+                                       onclick="return confirm('Sếp có chắc chắn muốn xóa danh mục [@item.NameVN] không?');">
+                                        <i data-lucide="trash-2" width="20"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 30px; color: #888;">Chưa có danh mục nào. Thêm đi sếp ơi!</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
