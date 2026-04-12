@@ -22,7 +22,7 @@ B8: Vào phần mềm PostGreSQL để kiểm tra Database đã được cập n
 
 B9: Vào lại Visual Studio dự án đang mở, nhấn nút "f5" hoặc click vào nút "Run"
 
-B10: Tận hưởng sản phẩm \(O.O)/
+B10: Tận hưởng sản phẩm \\(O.O)/
 
 
 <img width="2880" height="1800" alt="Screenshot (175)" src="https://github.com/user-attachments/assets/fcb73fb4-bb2a-42bc-8ea8-f60511ed7e81" />
