@@ -29,7 +29,66 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-red">DUY</span><span>EXPERT</span>
+            </div>
 
+            <div class="user-actions">
+                <a href="/GioHang/Index" class="cart-quick-view">
+                    <i data-lucide="shopping-bag" width="24"></i>
+                    <span class="cart-badge">@ViewBag.TotalCartItems</span>
+                </a>
+
+                <div class="user-profile" id="userProfileToggle">
+                    <div class="user-info">
+                        <span class="user-name">Nguyễn Đình Duy</span>
+                        <span class="user-role">Sếp Tổng</span>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="https://ui-avatars.com/api/?name=Duy+Nguyen&background=d93838&color=fff" alt="Avatar">
+                        <div class="online-status"></div>
+                    </div>
+
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <a href="#"><i data-lucide="user" width="16"></i> Tài khoản</a>
+                        <a href="#"><i data-lucide="settings" width="16"></i> Cài đặt</a>
+                        <hr>
+                        <a href="#" style="color: #d93838;"><i data-lucide="log-out" width="16"></i> Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileToggle = document.getElementById('userProfileToggle');
+            const dropdown = document.getElementById('profileDropdown');
+
+            // 1. Khi click vào khu vực Profile
+            profileToggle.addEventListener('click', function (event) {
+                // Ngăn chặn sự kiện click lan ra ngoài (để không bị vướng logic đóng ở dưới)
+                event.stopPropagation();
+                // Bật/tắt class 'show'
+                dropdown.classList.toggle('show');
+            });
+
+            // 2. Khi click vào bất kỳ đâu trên trang web (ngoài khu vực profile)
+            document.addEventListener('click', function (event) {
+                // Nếu click không nằm trong profileToggle thì ẩn dropdown đi
+                if (!profileToggle.contains(event.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            // 3. Giữ menu không bị đóng nếu sếp lỡ click vào khoảng trắng BÊN TRONG menu
+            dropdown.addEventListener('click', function (event) {
+                event.stopPropagation();
+            });
+        });
+    </script>
     <div class="container">
 
         <div class="tabs">
@@ -70,7 +129,7 @@
             </div>
 
             <div style="display: flex; gap: 10px;">
-                <a href="/DanhMuc/Index" class="btn-outline" style="text-decoration: none;">
+                <a href="/DanhMuc/Index " class="btn-outline" style="text-decoration: none;">
                     <i data-lucide="folder-tree" width="18"></i> Quản lý Danh Mục
                 </a>
 
@@ -108,10 +167,12 @@
                             </a>
                         </div>
 
-                        <img src="@sp.DuongDanAnh" alt="@sp.TenSanPham" class="product-image"
-                             onerror="this.src='https://via.placeholder.com/250x250?text=No+Image'" />
+                        <a href="/SanPham/Details/@sp.Id">
+                            <img src="@sp.DuongDanAnh" alt="@sp.TenSanPham" class="product-image"
+                                 onerror="this.src='https://via.placeholder.com/250x250?text=No+Image'" />
+                        </a>
 
-                        <a href="/SanPham/Add" class="add-to-cart">ADD TO CART</a>
+                        <a href="/SanPham/Details/@sp.Id" class="add-to-cart">ADD TO CART</a>
 
                         <div class="price-wrapper">
                             <span class="price">$@sp.GiaBan.ToString("0.00")</span>

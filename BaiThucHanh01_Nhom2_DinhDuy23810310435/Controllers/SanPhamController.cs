@@ -61,6 +61,9 @@ namespace BaiThucHanh01_Nhom2_DinhDuy23810310435.Controllers
             ViewBag.CurrentDanhMuc = danhMucId;
             ViewBag.DanhMucs = _context.DanhMucs.ToList();
 
+            // Đếm tổng số lượng sản phẩm trong giỏ hàng để hiện lên Badge
+            ViewBag.TotalCartItems = _context.GioHangs.Sum(g => g.SoLuong);
+
             return View(dsSanPham);
         }
 
@@ -192,6 +195,22 @@ namespace BaiThucHanh01_Nhom2_DinhDuy23810310435.Controllers
             _context.SanPham.Remove(sanPham);
             await _context.SaveChangesAsync();
             return RedirectToAction("Info");
+        }
+        //ACTION xem chi tiết sản phẩm khi click vào ảnh trong thẻ sản phẩm
+        public IActionResult Details(int id)
+        {
+            // Tìm sản phẩm theo id (sếp chỉnh lại _context tùy theo tên biến DB của sếp nhé)
+            // Bao gồm cả DanhMuc để hiển thị tên danh mục ở trang chi tiết
+            var sanPham = _context.SanPham
+                                  .FirstOrDefault(sp => sp.Id == id);
+
+            if (sanPham == null)
+            {
+                return NotFound(); // Nếu không tìm thấy trả về lỗi 404 chuẩn
+            }
+
+            // Trả về file Views/SanPham/Details.cshtml
+            return View(sanPham);
         }
     }
 }

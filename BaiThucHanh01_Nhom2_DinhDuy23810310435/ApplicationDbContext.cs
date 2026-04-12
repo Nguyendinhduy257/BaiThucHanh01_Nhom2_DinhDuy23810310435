@@ -11,6 +11,8 @@ namespace BaiThucHanh01_Nhom2_DinhDuy23810310435
         public DbSet<DonHang> DonHangs { get; set; }
         public DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; }
 
+        public DbSet<GioHang> GioHangs { get; set; }
+
         //lấy cấu trúc từ file Models/SanPhamSeeder.cs
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

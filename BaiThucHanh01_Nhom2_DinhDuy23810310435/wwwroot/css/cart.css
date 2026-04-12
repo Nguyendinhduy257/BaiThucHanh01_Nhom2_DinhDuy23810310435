@@ -1,0 +1,184 @@
+﻿.page-title {
+    margin-bottom: 30px;
+    font-weight: 800;
+}
+
+.cart-container {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+    align-items: start;
+}
+
+.cart-items {
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+}
+
+.cart-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    font-weight: 700;
+    color: #888;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.cart-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 20px 15px;
+    border-bottom: 1px solid #f9f9f9;
+    align-items: center;
+    position: relative;
+}
+
+.product-cell {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+    .product-cell img {
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+
+.price-cell, .total-cell {
+    font-weight: 700;
+    color: #222;
+}
+
+.remove-btn {
+    position: absolute;
+    right: 0;
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .remove-btn:hover {
+        color: #d93838;
+    }
+
+.cart-summary {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #666;
+}
+
+    .summary-row.total {
+        font-size: 20px;
+        color: #222;
+        font-weight: 800;
+    }
+.quantity-box{
+    display:flex;
+    width:50%;
+    justify-content:space-between
+}
+.btn-outline {
+    margin-top: 10px;
+    width: 82%;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+}
+.box-minus{
+    display:flex;
+    justify-content:center;
+    border:solid 1px black;
+    border-radius:20px;
+    width:35%;
+    height:35%;
+}
+.box-add {
+    border: solid 1px black;
+    border-radius: 20px;
+    width: 35%;
+    height: 35%;
+    display: flex;
+    justify-content: center;
+}
+/* =========================================
+   RESPONSIVE CHO TRANG GIỎ HÀNG (CART)
+========================================= */
+
+/* Màn hình Tablet (dưới 992px) */
+@media (max-width: 992px) {
+    .cart-container {
+        /* Chuyển giỏ hàng và bill thanh toán thành 1 cột xếp chồng */
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Màn hình Điện thoại (dưới 768px) */
+@media (max-width: 768px) {
+    .cart-header {
+        display: none; /* Ẩn cái header chữ đi cho đỡ rối mắt */
+    }
+
+    .cart-row {
+        /* Ép các thông tin sản phẩm thành 1 cột */
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 20px 15px;
+        position: relative;
+    }
+
+    .product-cell {
+        margin-bottom: 10px;
+    }
+
+    /* Thêm nhãn giả trước giá và tổng để dễ nhìn */
+    .price-cell::before {
+        content: "Giá: ";
+        font-weight: 500;
+        color: #888;
+    }
+
+    .total-cell::before {
+        content: "Tổng: ";
+        font-weight: 500;
+        color: #888;
+    }
+
+    .quantity-box {
+        width: 150px; /* Thu gọn hộp số lượng lại */
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .remove-btn {
+        top: 20px;
+        right: 15px;
+        background: #f9f9f9;
+        padding: 8px;
+        border-radius: 50%;
+    }
+    .btn-outline {
+        margin-top: 10px; 
+        width: 86%; 
+        text-decoration:none; 
+        display:flex;
+        justify-content:center;
+    }
+}

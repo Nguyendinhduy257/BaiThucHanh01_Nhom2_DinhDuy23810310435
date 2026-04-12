@@ -1,5 +1,177 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+/* --- MAIN HEADER --- */
+.main-header {
+    /* 1. Hiệu ứng Kính mờ (Glassmorphism) cực trend */
+    background: rgba(255, 255, 255, 0.85); /* Nền trắng trong suốt 85% */
+    backdrop-filter: blur(12px); /* Làm mờ nội dung bị cuộn xuống bên dưới */
+    -webkit-backdrop-filter: blur(12px); /* Hỗ trợ trình duyệt Safari (iPhone/Mac) */
+    /* 2. Gom gọn lại Margin và Padding cho code sạch sẽ */
+    padding: 15px 30px;
+    margin: 20px 40px 30px 40px; /* top: 20px, right: 40px, bottom: 30px, left: 40px */
+    border-radius: 30px;
+    /* 3. Logic dính trên màn hình (Floating Sticky) */
+    position: sticky;
+    top: 20px; /* Đẩy cách mép trên 20px khi cuộn để nó bồng bềnh như đám mây */
+    z-index: 1000;
+    /* 4. Nâng cấp đổ bóng để tạo độ nổi 3D chân thực hơn */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 255, 255, 1); /* Viền sáng lấp lánh nhẹ */
+    /* 5. Thêm hiệu ứng chuyển động mượt mà */
+    transition: all 0.3s ease;
+}
 
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo-red {
+    color: #d93838;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Cart Icon */
+.cart-quick-view {
+    position: relative;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #d93838;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 2px solid #fff;
+}
+
+/* Profile Section */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    border-radius: 50px;
+    transition: background 0.3s;
+}
+
+    .user-profile:hover {
+        background: #f9f9f9;
+    }
+
+.user-info {
+    text-align: right;
+}
+
+.user-name {
+    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    color: #222;
+}
+
+.user-role {
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.user-avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+    .user-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #eee;
+    }
+
+.online-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background: #10b981;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+
+/* Dropdown Menu */
+.profile-dropdown {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: #fff;
+    width: 180px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 10px;
+    display: none; /* Hiện ra khi hover profile */
+    flex-direction: column;
+    gap: 5px;
+}
+/*
+.user-profile:hover .profile-dropdown {
+    display: flex;
+}*/
+    .profile-dropdown.show {
+        display: flex;
+        animation: fadeIn 0.2s ease-in-out; /* Thêm tí hiệu ứng xuất hiện cho mượt */
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-dropdown a {
+    padding: 10px;
+    font-size: 13px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+    .profile-dropdown a:hover {
+        background: #fff5f5;
+        color: #d93838;
+    }
 body {
     font-family: 'Inter', Arial, sans-serif;
     margin: 0;
@@ -101,10 +273,13 @@ a {
     font-weight: 600;
     cursor: pointer;
     display: flex;
+    justify-content:center;
     align-items: center;
     gap: 8px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(217, 56, 56, 0.3);
+    font-weight:600;
+    font-size:18px;
 }
 
     .btn-fancy:hover {
@@ -155,7 +330,7 @@ a {
     position: relative;
     border-radius: 16px;
     transition: all 0.4s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.29);
     overflow: hidden;
 }
 
@@ -170,6 +345,10 @@ a {
     object-fit: contain;
     margin-bottom: 15px;
     transition: transform 0.5s ease;
+    border-top: solid 2px rgba(0,0,0,3.09);
+    border-left: solid 2px rgba(0,0,0,1.09);
+    border-right: solid 2px rgba(0,0,0,1.09);
+    border-radius:15px;
 }
 
 .product-card:hover .product-image {

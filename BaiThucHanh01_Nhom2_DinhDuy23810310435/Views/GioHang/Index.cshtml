@@ -1,0 +1,156 @@
+﻿@model IEnumerable<BaiThucHanh01_Nhom2_DinhDuy23810310435.Models.GioHang>
+@{
+    Layout = null;
+    decimal tongTien = 0;
+    int tongSoLuong = Model?.Sum(x => x.SoLuong) ?? 0;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng VIP Pro</title>
+    <link rel="stylesheet" href="~/css/info.css" />
+    <link rel="stylesheet" href="~/css/cart.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* CSS đơn giản cho Modal xác nhận xóa */
+        .swal2-popup {
+            border-radius: 20px !important;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-pay {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">
+            Shopping Cart
+            <span id="cart-count" style="color: #d93838; font-size: 18px;">(@tongSoLuong sản phẩm)</span>
+        </h1>
+
+        <div class="cart-container">
+            <div class="cart-items">
+                <div class="cart-header">
+                    <span>Sản phẩm</span>
+                    <span>Giá</span>
+                    <span>Số lượng</span>
+                    <span>Tổng</span>
+                </div>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        decimal thanhTien = item.SoLuong * item.SanPham.GiaBan;
+                        tongTien += thanhTien;
+
+                        <div class="cart-row" id="row-@item.Id">
+                            <div class="product-cell">
+                                <img src="@item.SanPham.DuongDanAnh" onerror="this.src='https://via.placeholder.com/80'" />
+                                <div>
+                                    <strong>@item.SanPham.TenSanPham</strong>
+                                    <p>Mã: SP - @item.SanPhamId</p>
+                                </div>
+                            </div>
+                            <div class="price-cell">$@item.SanPham.GiaBan.ToString("0.00")</div>
+                            <div class="qty-cell">
+                                <div class="quantity-box">
+                                    <a class="box-minus" href="/GioHang/UpdateQuantity?id=@item.Id&alignment=-1">-</a>
+                                    <span>@item.SoLuong</span>
+                                    <a class="box-add" href="/GioHang/UpdateQuantity?id=@item.Id&alignment=1">+</a>
+                                </div>
+                            </div>
+                            <div class="total-cell">$@thanhTien.ToString("0.00")</div>
+
+                            <button class="remove-btn" onclick="confirmDelete(@item.Id, '@item.SanPham.TenSanPham')">
+                                <i data-lucide="x" width="16"></i>
+                            </button>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div style="padding: 100px 40px; text-align: center; color: #888;">
+                        <i data-lucide="shopping-cart" width="64" style="opacity: 0.2; margin-bottom: 20px;"></i>
+                        <p style="font-size: 18px;">Giỏ hàng đang trống trơn sếp ơi!</p>
+                        <a href="/SanPham/Info" class="btn-fancy" style="display:inline-flex; margin-top:20px;">ĐI CHỐT ĐƠN NGAY</a>
+                    </div>
+                }
+            </div>
+
+            <div class="cart-summary">
+                <h3>Tóm tắt đơn hàng</h3>
+                <div class="summary-row"><span>Tạm tính:</span> <span>$@tongTien.ToString("0.00")</span></div>
+                <div class="summary-row"><span>Phí ship:</span> <span style="color: #10b981;">Miễn phí</span></div>
+                <hr>
+                <div class="summary-row total"><span>Tổng cộng:</span> <span>$@tongTien.ToString("0.00")</span></div>
+
+                @if (tongSoLuong > 0)
+                {
+                    <button onclick="processPayment()" class="btn-fancy btn-pay" style="width: 100%; margin-top: 20px; justify-content: center; border:none;">
+                        <i data-lucide="shield-check" width="20"></i> XÁC NHẬN THANH TOÁN
+                    </button>
+                }
+                <a href="/SanPham/Info" class="btn-outline">Tiếp tục mua sắm</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // LOGIC XÁC NHẬN XÓA SẢN PHẨM
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: 'Xóa sản phẩm?',
+                text: `Sếp chắc chắn muốn bỏ [${name}] khỏi giỏ hàng chứ?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ừ, xóa đi!',
+                cancelButtonText: 'Để tôi xem lại'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/GioHang/RemoveFromCart/${id}`;
+                }
+            })
+        }
+
+        // LOGIC THANH TOÁN
+        function processPayment() {
+            Swal.fire({
+                title: 'Xác nhận đơn hàng',
+                text: "Hệ thống sẽ tiến hành thanh toán tổng đơn hàng của sếp.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Thanh toán ngay!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/GioHang/ProcessPayment';
+                }
+            })
+        }
+
+        // 4. MODAL THANH TOÁN THÀNH CÔNG (Hiện ra sau khi reload trang)
+        @if (TempData["PaymentSuccess"] != null)
+        {
+                <text>
+                Swal.fire({
+                    title: 'Thành Công!',
+                    text: 'Đơn hàng của sếp đã được hệ thống ghi nhận. Cảm ơn sếp nhé!',
+                    icon: 'success',
+                    confirmButtonText: 'Tuyệt vời',
+                    confirmButtonColor: '#d93838'
+                });
+                </text>
+        }
+    </script>
+</body>
+</html>

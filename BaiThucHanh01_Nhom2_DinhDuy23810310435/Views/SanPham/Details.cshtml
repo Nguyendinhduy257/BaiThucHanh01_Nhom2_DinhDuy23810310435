@@ -1,0 +1,81 @@
+﻿@model BaiThucHanh01_Nhom2_DinhDuy23810310435.Models.SanPham
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@Model.TenSanPham - Details</title>
+    <link rel="stylesheet" href="~/css/info.css" />
+    <link rel="stylesheet" href="~/css/details.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="container">
+        <a href="/SanPham/Info" class="btn-outline" style="width: fit-content; margin-bottom: 20px;gap:10px;display:flex;justify-content:space-between">
+            <i data-lucide="arrow-left" width="28" style="margin-right:20px"></i> Quay lại cửa hàng
+        </a>
+
+        <div class="details-wrapper">
+            <div class="details-image">
+                @if (Model.PhanTramGiam > 0)
+                {
+                    <div class="badge-discount">-@Model.PhanTramGiam%</div>
+                }
+                <img src="@Model.DuongDanAnh" onerror="this.src='https://via.placeholder.com/500'" />
+            </div>
+
+            <div class="details-info">
+                <span class="category-tag">@(Model.DanhMuc?.NameVN ?? "Thời trang")</span>
+                <h1 class="product-title">@Model.TenSanPham</h1>
+
+                <div class="price-section">
+                    <span class="current-price">$@Model.GiaBan.ToString("0.00")</span>
+                    @if (Model.GiaGoc.HasValue)
+                    {
+                        <span class="old-price">$@Model.GiaGoc.Value.ToString("0.00")</span>
+                    }
+                </div>
+
+                <p class="description">
+                    Sản phẩm cao cấp thuộc bộ sưu tập mới nhất. Chất liệu bền bỉ, thiết kế hiện đại
+                    phù hợp cho mọi hoạt động hàng ngày. Đây là lựa chọn hàng đầu cho các sếp sành điệu.
+                </p>
+
+                <div class="action-row">
+                    <div class="quantity-box">
+                        <button type="button" onclick="changeQty(-1)" style="font-size:18px">-</button>
+                        <input type="number" id="qty" value="1" min="1">
+                        <button type="button" onclick="changeQty(1)" style="font-size:18px">+</button>
+                    </div>
+                    <button type="button" onclick="addToCartWithQty(@Model.Id)" class="btn-fancy" style="flex: 1; justify-content: center; border:none;">
+                        <i data-lucide="shopping-cart" width="20"></i> ADD TO CART
+                    </button>
+                </div>
+
+                <script>
+                    function changeQty(n) {
+                        let i = document.getElementById('qty');
+                        let newVal = parseInt(i.value) + n;
+                        i.value = newVal < 1 ? 1 : newVal;
+                    }
+
+                    function addToCartWithQty(productId) {
+                        let quantity = document.getElementById('qty').value;
+                        // Chuyển hướng kèm theo tham số soLuong
+                        window.location.href = `/GioHang/AddToCart?id=${productId}&soLuong=${quantity}`;
+                    }
+                </script>
+
+                <div class="meta-info">
+                    <p><strong>Mã sản phẩm:</strong> SP-@Model.Id</p>
+                    <p><strong>Trạng thái:</strong> <span style="color: #10b981;">Còn hàng</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>lucide.createIcons(); function changeQty(n){ let i = document.getElementById('qty'); i.value = Math.max(1, parseInt(i.value)+n); }</script>
+</body>
+</html>
